@@ -47,9 +47,9 @@ namespace Fan.Client
             }
         }
 
-        public static void Recurring(Expression<Action> method, string cron)
+        public static void Recurring(Expression<Action> method, string cron, string jobName)
         {
-            RecurringJob.AddOrUpdate(method, cron);
+            RecurringJob.AddOrUpdate(jobName, method, cron);
         }
 
         public static string Continue(string jobId, Expression<Action> method)

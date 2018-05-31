@@ -1,4 +1,5 @@
-﻿using Hangfire;
+﻿using Fan.Addins.Filters;
+using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -16,10 +17,12 @@ namespace Fan.Addins
         public static IApplicationBuilder UseFan(this IApplicationBuilder app, string path)
         {
             app.UseHangfireServer();
-            app.UseHangfireDashboard();
+            app.UseHangfireDashboard("/fan", new DashboardOptions()
+            {
+                Authorization = new[] { new HangfireAuthorizeFilter() }
+            });
 
-            AssemblyResolver.Init(path);
-            AppDomain.CurrentDomain.AssemblyResolve += AssemblyResolver.ResolveAssembly;
+            AssemblyResolver.Init(path, AssemblyResolver.ResolveAssembly);
 
             return app;
         }

@@ -12,7 +12,7 @@ namespace Fan.Addins
     {
         public static Dictionary<string, AddinInfo> _map = new Dictionary<string, AddinInfo>();
 
-        public static void Init(string path)
+        public static void Init(string path, ResolveEventHandler handler)
         {
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
@@ -26,6 +26,8 @@ namespace Fan.Addins
                     _map.Add(addin.Name, addin);
                 }
             }
+
+            AppDomain.CurrentDomain.AssemblyResolve += handler;
         }
         public static Assembly ResolveAssembly(object sender, ResolveEventArgs args)
         {
