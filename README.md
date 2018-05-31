@@ -1,3 +1,3 @@
 # Fan <img src="https://github.com/KevinYeti/Fan/raw/master/icon.png" width="64">
 
-A distributed job system using hangfire. 
+A distributed job system by hangfire. 
