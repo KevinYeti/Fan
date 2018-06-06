@@ -18,13 +18,19 @@ namespace Fan.WebConsole
             BuildWebHost(args).Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .UseKestrel(options =>
-                {
-                    options.Listen(IPAddress.Any, 3000);
-                })
-                .Build();
+        public static IWebHost BuildWebHost(string[] args)
+        {
+            if (args.Any(g => g.Trim().ToLower().Contains("nodashboard"))) { 
+                Startup.NoDashboard = true;
+            }
+
+            return WebHost.CreateDefaultBuilder(new string[] { })
+                    .UseStartup<Startup>()
+                    .UseKestrel(options =>
+                    {
+                        options.Listen(IPAddress.Any, 3000);
+                    })
+                    .Build();
+        }
     }
 }

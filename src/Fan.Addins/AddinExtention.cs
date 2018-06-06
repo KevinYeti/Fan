@@ -14,13 +14,17 @@ namespace Fan.Addins
             return services;
         }
 
-        public static IApplicationBuilder UseFan(this IApplicationBuilder app, string path)
+        public static IApplicationBuilder UseFan(this IApplicationBuilder app, string path, bool dashboard)
         {
             app.UseHangfireServer();
-            app.UseHangfireDashboard("/fan", new DashboardOptions()
+
+            if (dashboard)
             {
-                Authorization = new[] { new HangfireAuthorizeFilter() }
-            });
+                app.UseHangfireDashboard("/fan", new DashboardOptions()
+                {
+                    Authorization = new[] { new HangfireAuthorizeFilter() }
+                });
+            }
 
             AssemblyResolver.Init(path, AssemblyResolver.ResolveAssembly);
 

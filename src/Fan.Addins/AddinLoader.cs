@@ -30,7 +30,7 @@ namespace Fan.Addins
                 else
                     throw new Exception("Can not load assembly.");
             }
-            catch
+            catch(Exception ex)
             {
                 Console.WriteLine("[Error] Not an addin file: " + file);
                 return null;
@@ -43,8 +43,8 @@ namespace Fan.Addins
                 return false;
             else
             {
-                var types = asm.GetTypes();
-                if (types == null || types.Length == 0)
+                var types = asm.GetTypesSafely();
+                if (types == null || types.Count() == 0)
                     return false;
                 else
                 {
@@ -62,6 +62,18 @@ namespace Fan.Addins
             }
 
             return false;
+        }
+
+        private static IEnumerable<Type> GetTypesSafely(this Assembly assembly)
+        {
+            try
+            {
+                return assembly.GetTypes();
+            }
+            catch (ReflectionTypeLoadException ex)
+            {
+                return ex.Types.Where(x => x != null);
+            }
         }
     }
 }
