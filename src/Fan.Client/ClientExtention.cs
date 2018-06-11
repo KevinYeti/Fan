@@ -10,7 +10,8 @@ namespace Fan.Client
         public static IServiceCollection AddFan(this IServiceCollection services, string connection)
         {
             Job.Init(connection);
-
+            Console.WriteLine("Fan started with: " + connection);
+            
             return services;
         }
 
